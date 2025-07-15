@@ -59,57 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add typing effect to hero title
-document.addEventListener('DOMContentLoaded', () => {
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const nameText = '北代 絢大';
-        const subtitleText = 'Ayato Kitadai';
-        
-        // Clear the content first and create structure
-        heroTitle.innerHTML = '';
-        heroTitle.style.opacity = '1';
-        
-        // Create name element
-        const nameElement = document.createElement('span');
-        heroTitle.appendChild(nameElement);
-        
-        // Create line break
-        const lineBreak = document.createElement('br');
-        heroTitle.appendChild(lineBreak);
-        
-        // Create subtitle element
-        const subtitleElement = document.createElement('span');
-        subtitleElement.className = 'hero-subtitle';
-        heroTitle.appendChild(subtitleElement);
-        
-        let nameIndex = 0;
-        let subtitleIndex = 0;
-        
-        const typeWriter = () => {
-            if (nameIndex < nameText.length) {
-                nameElement.textContent += nameText.charAt(nameIndex);
-                nameIndex++;
-                setTimeout(typeWriter, 50);
-            } else if (subtitleIndex < subtitleText.length) {
-                if (subtitleIndex === 0) {
-                    // Small delay before starting subtitle
-                    setTimeout(() => {
-                        subtitleElement.textContent += subtitleText.charAt(subtitleIndex);
-                        subtitleIndex++;
-                        setTimeout(typeWriter, 50);
-                    }, 200);
-                } else {
-                    subtitleElement.textContent += subtitleText.charAt(subtitleIndex);
-                    subtitleIndex++;
-                    setTimeout(typeWriter, 50);
-                }
-            }
-        };
-        
-        setTimeout(typeWriter, 1000);
-    }
-});
+// Hero title is now static - no typing effect needed
 
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
@@ -212,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const authorSection = authorMatch[1];
         // Remove HTML tags and split by common separators
         const plainText = authorSection.replace(/<[^>]*>/g, '');
-        const authors = plainText.split(/,|\sand\s/)
+        // Split by comma and "and" (with optional &), then clean up
+        const authors = plainText.split(/,|\s+and\s+|\s+&\s+/)
             .map(author => author.trim())
             .filter(author => author.length > 0 && !author.match(/^\d+$/));
         
@@ -235,9 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Remove any leading numbering like "[P1] " or similar
         const cleanHtml = html.replace(/^\[[^\]]+\]\s*/, '');
         // Check if text starts with A. Kitadai (with or without strong tags)
-        // Look for <strong>A. Kitadai</strong> or just A. Kitadai at the beginning
-        return /^(<strong>)?\s*A\.\s*Kitadai(<\/strong>)?[\s,;]/.test(cleanHtml) || 
-               /^<strong>A\.\s*Kitadai<\/strong>[\s,;]/.test(cleanHtml);
+        const isFirst = /^(<strong>)?\s*A\.\s*Kitadai(<\/strong>)?[\s,;]/.test(cleanHtml) || 
+                       /^<strong>A\.\s*Kitadai<\/strong>[\s,;]/.test(cleanHtml);
+        return isFirst;
     }
     
     // Sort publications
@@ -328,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             items.forEach(item => {
                 const authors = extractAllAuthors(item.innerHTML);
                 const hasSelectedAuthor = selectedAuthors.some(selectedAuthor => 
-                    authors.some(author => author.includes(selectedAuthor))
+                    authors.some(author => author.trim() === selectedAuthor.trim())
                 );
                 
                 if (hasSelectedAuthor) {
