@@ -151,6 +151,58 @@ document.addEventListener('DOMContentLoaded', () => {
         return authorMatch ? authorMatch[1].trim() : '';
     }
     
+    // Check if a string is likely to be a person's name
+    function isPersonName(name) {
+        // Remove common title/degree patterns
+        const cleanName = name.replace(/^(Dr\.?|Prof\.?|Mr\.?|Ms\.?|Mrs\.?)\s+/i, '');
+        
+        // Exclude patterns that are clearly not names
+        const excludePatterns = [
+            /^\d+年\d+月$/,           // 2023年3月 format
+            /^\d{4}年\d{1,2}月$/,     // Year-month format
+            /^\d{4}$/,               // Just year numbers
+            /^\d+月$/,               // Just month
+            /^(大阪|東京|京都|神奈川|愛知|福岡|北海道|沖縄|島根|高知|兵庫|千葉|埼玉|茨城|栃木|群馬|山梨|長野|新潟|富山|石川|福井|静岡|岐阜|三重|滋賀|奈良|和歌山|鳥取|岡山|広島|山口|徳島|香川|愛媛|佐賀|長崎|熊本|大分|宮崎|鹿児島|青森|岩手|宮城|秋田|山形|福島)$/,
+            /^(pp?\.|pages?|vol\.|volume|no\.|number)\s*\d+/i,  // Page numbers, volumes
+            /^IEEE|ACM|IFIP|CIRP|Conference|Workshop|Symposium/i,  // Conference names
+            /^Proceedings|Journal|Trans\.|Trans|Transactions/i,     // Publication types
+            /^\d+\s*-\s*\d+$/,       // Page ranges like "3250-3257"
+            /^\d+\s*,\s*\d+/,        // Number sequences
+            /^R&R$/,                 // R&R (Revise and Resubmit)
+            /^Under Review$/i,       // Under Review
+            /Italia?|Portugal|Spain|United Kingdom|Mexico|Greece/i,  // Country names
+            /^(January|February|March|April|May|June|July|August|September|October|November|December)$/i,  // Months
+            /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.?$/i,  // Abbreviated months
+            /^\d+\s*-\s*\d+,?\s+(June|July|March|April|May|August|September|October|November|December)\s*,?\s*\d{4}/i,  // Date ranges
+            /^\d+\s*,\s*\d+\s*-\s*\d+$/,  // Volume, page range
+            /^\w+\s+(Italy|Portugal|Spain|United Kingdom|Mexico|Greece|Japan|USA|UK)$/i,  // City, Country
+            /^\w+\s*,\s*\w+\s*,\s*\d+\s*-\s*\d+,?\s*\d{4}/  // Complex publication info
+        ];
+        
+        // Check if name matches any exclude pattern
+        if (excludePatterns.some(pattern => pattern.test(cleanName))) {
+            return false;
+        }
+        
+        // Additional checks for person names
+        // Names typically have alphabetic characters and maybe some punctuation
+        if (!/^[A-Za-z\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s\.,'-]+$/.test(cleanName)) {
+            return false;
+        }
+        
+        // Names are typically between 2-50 characters
+        if (cleanName.length < 2 || cleanName.length > 50) {
+            return false;
+        }
+        
+        // Should contain at least one letter
+        if (!/[A-Za-z\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(cleanName)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     // Extract all authors from publication HTML
     function extractAllAuthors(html) {
         // Remove any leading numbering like "[P1] " or similar
@@ -165,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Split by comma and "and" (with optional &), then clean up
         const authors = plainText.split(/,|\s+and\s+|\s+&\s+/)
             .map(author => author.trim())
-            .filter(author => author.length > 0 && !author.match(/^\d+$/));
+            .filter(author => author.length > 0 && !author.match(/^\d+$/) && isPersonName(author));
         
         return authors;
     }
@@ -263,52 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Filter publications by coauthors
+    // Legacy function - now handled in applyAllFilters
     function filterByCoauthors(selectedAuthors) {
-        if (selectedAuthors.length === 0) {
-            // Show all if no authors selected
-            document.querySelectorAll('.cv-publication-list li').forEach(item => {
-                item.classList.remove('hidden-by-coauthor');
-            });
-            return;
-        }
-        
-        document.querySelectorAll('.cv-publication-list').forEach(list => {
-            const items = Array.from(list.children);
-            
-            items.forEach(item => {
-                const authors = extractAllAuthors(item.innerHTML);
-                const hasSelectedAuthor = selectedAuthors.some(selectedAuthor => 
-                    authors.some(author => author.trim() === selectedAuthor.trim())
-                );
-                
-                if (hasSelectedAuthor) {
-                    item.classList.remove('hidden-by-coauthor');
-                } else {
-                    item.classList.add('hidden-by-coauthor');
-                }
-            });
-        });
+        // This function is now integrated into applyAllFilters
+        // Keeping for backward compatibility
     }
     
-    // Filter publications by first author
+    // Legacy function - now handled in applyAllFilters
     function filterByFirstAuthor(showFirstAuthorOnly) {
-        document.querySelectorAll('.cv-publication-list').forEach(list => {
-            const items = Array.from(list.children);
-            
-            items.forEach(item => {
-                if (showFirstAuthorOnly) {
-                    const isFirst = isFirstAuthor(item.innerHTML);
-                    if (isFirst) {
-                        item.classList.remove('hidden-by-first-author');
-                    } else {
-                        item.classList.add('hidden-by-first-author');
-                    }
-                } else {
-                    item.classList.remove('hidden-by-first-author');
-                }
-            });
-        });
+        // This function is now integrated into applyAllFilters
+        // Keeping for backward compatibility
     }
     
     // Apply all filters
@@ -317,31 +333,49 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCoauthors = Array.from(coauthorsSelect.selectedOptions).map(option => option.value);
         const firstAuthorFilter = firstAuthorCheckbox.checked;
         
-        // Apply category filter
+        // Apply category filter (section level)
         filterPublications(categoryFilter);
         
-        // Apply coauthor filter
-        filterByCoauthors(selectedCoauthors);
-        
-        // Apply first author filter
-        filterByFirstAuthor(firstAuthorFilter);
-        
-        // Update display based on all filters
-        updateItemVisibility();
+        // Apply item-level filters
+        document.querySelectorAll('.cv-publication-list').forEach(list => {
+            const items = Array.from(list.children);
+            
+            items.forEach(item => {
+                let shouldShow = true;
+                
+                // Check coauthor filter
+                if (selectedCoauthors.length > 0) {
+                    const authors = extractAllAuthors(item.innerHTML);
+                    const hasSelectedAuthor = selectedCoauthors.some(selectedAuthor => 
+                        authors.some(author => author.trim() === selectedAuthor.trim())
+                    );
+                    if (!hasSelectedAuthor) {
+                        shouldShow = false;
+                    }
+                }
+                
+                // Check first author filter
+                if (firstAuthorFilter) {
+                    const isFirst = isFirstAuthor(item.innerHTML);
+                    if (!isFirst) {
+                        shouldShow = false;
+                    }
+                }
+                
+                // Apply visibility
+                if (shouldShow) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
     }
     
-    // Update item visibility based on all applied filters
+    // Legacy function - now handled in applyAllFilters
     function updateItemVisibility() {
-        document.querySelectorAll('.cv-publication-list li').forEach(item => {
-            const hiddenByCoauthor = item.classList.contains('hidden-by-coauthor');
-            const hiddenByFirstAuthor = item.classList.contains('hidden-by-first-author');
-            
-            if (hiddenByCoauthor || hiddenByFirstAuthor) {
-                item.style.display = 'none';
-            } else {
-                item.style.display = 'block';
-            }
-        });
+        // This function is now integrated into applyAllFilters
+        // Keeping for backward compatibility
     }
     
     // Reset to original state
