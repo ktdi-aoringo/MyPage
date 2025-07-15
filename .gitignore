@@ -1,0 +1,16 @@
+# Claude Code設定ファイル
+CLAUDE.md
+
+# macOS
+.DS_Store
+
+# IDEファイル
+.vscode/
+.idea/
+
+# ログファイル
+*.log
+
+# 一時ファイル
+*.tmp
+*.temp
