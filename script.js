@@ -100,18 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Name mapping for English and Japanese names
     const nameMapping = {
+        'A. Kitadai': '北代絢大',
+        'Ayato Kitadai': '北代絢大',
         'M. Fujita': '藤田正典',
         'N. Nishino': '西野成昭',
         'Y. Tsurusaki': '鶴崎祐大',
         'Y. Fukasawa': '深澤祐援',
         'S. Lee': '李相直',
-        'Z. Zhou': '周澤宇',
         'M. Kobayashi': '小林美充希',
         'U. Sato': '佐藤詩',
         'K. Akashi': '明石圭佑',
         'S. Sugihara': '杉原秀一',
-        'Z. Cheng': '成也',
-        'Y. Dai': '戴雨',
         'Y. Takenoya': '竹ノ谷悠',
         'K. Ogawa': '小川健太',
         'T. Nakashima': '中島拓',
@@ -119,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'J. Teng': '滕健勇',
         'K. Nishiyama': '西山浩平',
         'H. Sawazaki': '澤崎遙夏',
-        'X. Shang': '尚暁',
         'T. Oyama': '大山拓',
         'R. Wada': '和田亮',
         'R. Miratsu': '美良津亮',
@@ -134,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'N. Mizutani': '水谷尚紀'
     };
     
+    // Chinese names that should remain in Roman letters
+    const chineseNames = ['Z. Zhou', 'Z. Cheng', 'Y. Dai', 'X. Shang', 'L. Zhang'];
+    
     // Create reverse mapping (Japanese to English)
     const reverseNameMapping = {};
     Object.keys(nameMapping).forEach(english => {
@@ -143,6 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to normalize names (convert to preferred display form)
     function normalizeAuthorName(name) {
         const trimmed = name.trim();
+        
+        // Special handling for self (A. Kitadai variants)
+        if (trimmed === 'A. Kitadai' || trimmed === 'Ayato Kitadai' || trimmed === '北代絢大') {
+            return '北代絢大';
+        }
+        
+        // Keep Chinese names in Roman letters
+        if (chineseNames.includes(trimmed)) {
+            return trimmed;
+        }
         
         // If it's an English name that has a Japanese equivalent, use Japanese
         if (nameMapping[trimmed]) {
@@ -185,11 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const authors = extractAllAuthors(item.innerHTML);
             authors.forEach(author => {
-                if (author !== 'A. Kitadai' && author !== '北代絢大') { // Exclude self
-                    const normalizedName = normalizeAuthorName(author);
-                    if (normalizedName !== 'A. Kitadai' && normalizedName !== '北代絢大') {
-                        allCoauthors.set(normalizedName, (allCoauthors.get(normalizedName) || 0) + 1);
-                    }
+                const normalizedName = normalizeAuthorName(author);
+                // Exclude self (all variants)
+                if (normalizedName !== '北代絢大') {
+                    allCoauthors.set(normalizedName, (allCoauthors.get(normalizedName) || 0) + 1);
                 }
             });
         });
