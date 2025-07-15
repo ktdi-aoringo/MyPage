@@ -63,16 +63,32 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
-        const text = heroTitle.innerHTML;
+        const nameText = '北代 絢大';
+        const subtitleText = 'Ayato Kitadai';
+        
+        // Clear the content first
         heroTitle.innerHTML = '';
         heroTitle.style.opacity = '1';
         
         let i = 0;
         const typeWriter = () => {
-            if (i < text.length) {
-                heroTitle.innerHTML += text.charAt(i);
+            if (i < nameText.length) {
+                heroTitle.innerHTML += nameText.charAt(i);
                 i++;
                 setTimeout(typeWriter, 50);
+            } else if (i === nameText.length) {
+                // Add line break and start subtitle
+                heroTitle.innerHTML += '<br><span class="hero-subtitle">';
+                i++;
+                setTimeout(typeWriter, 200);
+            } else if (i < nameText.length + subtitleText.length + 1) {
+                const subtitleIndex = i - nameText.length - 1;
+                heroTitle.innerHTML = nameText + '<br><span class="hero-subtitle">' + subtitleText.substring(0, subtitleIndex + 1);
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                // Complete the subtitle span
+                heroTitle.innerHTML = nameText + '<br><span class="hero-subtitle">' + subtitleText + '</span>';
             }
         };
         
