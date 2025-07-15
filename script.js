@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const sortSelect = document.getElementById('sort-by');
     const filterSelect = document.getElementById('filter-category');
+    const firstAuthorSelect = document.getElementById('filter-first-author');
     const resetButton = document.getElementById('reset-sort');
     
     // Store original order
@@ -163,8 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Extract year from publication text
     function extractYear(text) {
-        const yearMatch = text.match(/(\d{4})/g);
-        return yearMatch ? Math.max(...yearMatch.map(Number)) : 0;
+        // Look for 4-digit years, prioritizing those at the end or followed by period/comma
+        const yearMatches = text.match(/\b(\d{4})\b/g);
+        if (!yearMatches) return 0;
+        
+        // Convert to numbers and find the most recent year
+        const years = yearMatches.map(Number).filter(year => year >= 1900 && year <= 2030);
+        return years.length > 0 ? Math.max(...years) : 0;
     }
     
     // Extract author from publication text
@@ -173,10 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return authorMatch ? authorMatch[1].trim() : '';
     }
     
-    // Extract title from publication text
-    function extractTitle(text) {
-        const titleMatch = text.match(/"([^"]+)"/);
-        return titleMatch ? titleMatch[1].trim() : '';
+    // Check if A.Kitadai is first author
+    function isFirstAuthor(text) {
+        // Remove any leading numbering like "[P1] " or similar
+        const cleanText = text.replace(/^\[[^\]]+\]\s*/, '');
+        // Check if text starts with A. Kitadai (with or without strong tags)
+        return /^(<strong>)?A\.\s*Kitadai(<\/strong>)?[,;]/.test(cleanText);
     }
     
     // Sort publications
@@ -190,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sortedItems = items.sort((a, b) => {
                         const yearA = extractYear(a.textContent);
                         const yearB = extractYear(b.textContent);
+                        console.log(`Comparing: ${yearA} vs ${yearB} (${a.textContent.substring(0, 50)}...)`);
                         return yearB - yearA;
                     });
                     break;
@@ -198,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sortedItems = items.sort((a, b) => {
                         const yearA = extractYear(a.textContent);
                         const yearB = extractYear(b.textContent);
+                        console.log(`Comparing: ${yearA} vs ${yearB} (${a.textContent.substring(0, 50)}...)`);
                         return yearA - yearB;
                     });
                     break;
@@ -210,23 +220,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     break;
                     
-                case 'title':
-                    sortedItems = items.sort((a, b) => {
-                        const titleA = extractTitle(a.textContent);
-                        const titleB = extractTitle(b.textContent);
-                        return titleA.localeCompare(titleB);
-                    });
-                    break;
-                    
                 default:
-                    sortedItems = originalOrder.get(list) || items;
+                    // Use original order
+                    const originalItems = originalOrder.get(list);
+                    if (originalItems) {
+                        sortedItems = originalItems.map(item => item.cloneNode(true));
+                    } else {
+                        sortedItems = items;
+                    }
                     break;
             }
             
             // Clear and re-append sorted items
             list.innerHTML = '';
             sortedItems.forEach(item => {
-                list.appendChild(item.cloneNode ? item.cloneNode(true) : item);
+                list.appendChild(item);
             });
             
             // Add sorted class for styling
@@ -253,21 +261,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // Filter publications by first author
+    function filterByFirstAuthor(showFirstAuthorOnly) {
+        document.querySelectorAll('.cv-publication-list').forEach(list => {
+            const items = Array.from(list.children);
+            
+            items.forEach(item => {
+                if (showFirstAuthorOnly) {
+                    const isFirst = isFirstAuthor(item.textContent);
+                    item.style.display = isFirst ? 'block' : 'none';
+                } else {
+                    item.style.display = 'block';
+                }
+            });
+        });
+    }
+    
+    // Apply all filters
+    function applyAllFilters() {
+        const categoryFilter = filterSelect.value;
+        const firstAuthorFilter = firstAuthorSelect.value;
+        
+        // Apply category filter
+        filterPublications(categoryFilter);
+        
+        // Apply first author filter
+        filterByFirstAuthor(firstAuthorFilter === 'first-author');
+    }
+    
     // Reset to original state
     function resetSortFilter() {
         sortSelect.value = 'default';
         filterSelect.value = 'all';
+        firstAuthorSelect.value = 'all';
         sortPublications('default');
-        filterPublications('all');
+        applyAllFilters();
     }
     
     // Event listeners
     sortSelect.addEventListener('change', (e) => {
         sortPublications(e.target.value);
+        applyAllFilters();
     });
     
     filterSelect.addEventListener('change', (e) => {
-        filterPublications(e.target.value);
+        applyAllFilters();
+    });
+    
+    firstAuthorSelect.addEventListener('change', (e) => {
+        applyAllFilters();
     });
     
     resetButton.addEventListener('click', resetSortFilter);

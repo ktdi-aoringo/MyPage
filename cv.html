@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">北代 絢大</a>
+                <a href="index.html">ホーム</a>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html#research">Research</a></li>
@@ -105,7 +105,6 @@
                             <option value="year-desc">年度順（新しい順）</option>
                             <option value="year-asc">年度順（古い順）</option>
                             <option value="author">著者順（アルファベット）</option>
-                            <option value="title">タイトル順（アルファベット）</option>
                         </select>
                         
                         <label for="filter-category">カテゴリ:</label>
@@ -118,6 +117,12 @@
                             <option value="awards">受賞</option>
                             <option value="talks">講演</option>
                             <option value="scheduled">発表予定</option>
+                        </select>
+                        
+                        <label for="filter-first-author">著者フィルタ:</label>
+                        <select id="filter-first-author">
+                            <option value="all">すべて</option>
+                            <option value="first-author">A.Kitadai ファースト著者のみ</option>
                         </select>
                         
                         <button id="reset-sort">リセット</button>
