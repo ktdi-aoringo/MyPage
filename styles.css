@@ -392,11 +392,114 @@ body {
     border-left: 3px solid #667eea;
     line-height: 1.6;
     font-size: 0.95rem;
+    position: relative;
 }
 
 .cv-publication-list li strong {
     color: #2563eb;
     font-weight: 600;
+}
+
+/* Category-specific numbering */
+.cv-publication-list.proceedings {
+    counter-reset: proceedings-counter;
+}
+
+.cv-publication-list.proceedings li::before {
+    counter-increment: proceedings-counter;
+    content: "[P" counter(proceedings-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.working-papers {
+    counter-reset: working-counter;
+}
+
+.cv-publication-list.working-papers li::before {
+    counter-increment: working-counter;
+    content: "[W" counter(working-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.international {
+    counter-reset: international-counter;
+}
+
+.cv-publication-list.international li::before {
+    counter-increment: international-counter;
+    content: "[I" counter(international-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.domestic {
+    counter-reset: domestic-counter;
+}
+
+.cv-publication-list.domestic li::before {
+    counter-increment: domestic-counter;
+    content: "[D" counter(domestic-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.awards {
+    counter-reset: awards-counter;
+}
+
+.cv-publication-list.awards li::before {
+    counter-increment: awards-counter;
+    content: "[A" counter(awards-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.talks {
+    counter-reset: talks-counter;
+}
+
+.cv-publication-list.talks li::before {
+    counter-increment: talks-counter;
+    content: "[T" counter(talks-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.cv-publication-list.scheduled {
+    counter-reset: scheduled-counter;
+}
+
+.cv-publication-list.scheduled li::before {
+    counter-increment: scheduled-counter;
+    content: "[S" counter(scheduled-counter) "] ";
+    font-weight: 600;
+    color: #2563eb;
+}
+
+/* Sort controls for future implementation */
+.cv-sort-controls {
+    display: none; /* Hidden for now, will be enabled later */
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.cv-sort-controls label {
+    margin-right: 1rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.cv-sort-controls select {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: white;
+    color: #374151;
 }
 
 .skill-item {
