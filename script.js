@@ -66,29 +66,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const nameText = '北代 絢大';
         const subtitleText = 'Ayato Kitadai';
         
-        // Clear the content first
+        // Clear the content first and create structure
         heroTitle.innerHTML = '';
         heroTitle.style.opacity = '1';
         
-        let i = 0;
+        // Create name element
+        const nameElement = document.createElement('span');
+        heroTitle.appendChild(nameElement);
+        
+        // Create line break
+        const lineBreak = document.createElement('br');
+        heroTitle.appendChild(lineBreak);
+        
+        // Create subtitle element
+        const subtitleElement = document.createElement('span');
+        subtitleElement.className = 'hero-subtitle';
+        heroTitle.appendChild(subtitleElement);
+        
+        let nameIndex = 0;
+        let subtitleIndex = 0;
+        
         const typeWriter = () => {
-            if (i < nameText.length) {
-                heroTitle.innerHTML += nameText.charAt(i);
-                i++;
+            if (nameIndex < nameText.length) {
+                nameElement.textContent += nameText.charAt(nameIndex);
+                nameIndex++;
                 setTimeout(typeWriter, 50);
-            } else if (i === nameText.length) {
-                // Add line break and start subtitle
-                heroTitle.innerHTML += '<br><span class="hero-subtitle">';
-                i++;
-                setTimeout(typeWriter, 200);
-            } else if (i < nameText.length + subtitleText.length + 1) {
-                const subtitleIndex = i - nameText.length - 1;
-                heroTitle.innerHTML = nameText + '<br><span class="hero-subtitle">' + subtitleText.substring(0, subtitleIndex + 1);
-                i++;
-                setTimeout(typeWriter, 50);
-            } else {
-                // Complete the subtitle span
-                heroTitle.innerHTML = nameText + '<br><span class="hero-subtitle">' + subtitleText + '</span>';
+            } else if (subtitleIndex < subtitleText.length) {
+                if (subtitleIndex === 0) {
+                    // Small delay before starting subtitle
+                    setTimeout(() => {
+                        subtitleElement.textContent += subtitleText.charAt(subtitleIndex);
+                        subtitleIndex++;
+                        setTimeout(typeWriter, 50);
+                    }, 200);
+                } else {
+                    subtitleElement.textContent += subtitleText.charAt(subtitleIndex);
+                    subtitleIndex++;
+                    setTimeout(typeWriter, 50);
+                }
             }
         };
         
