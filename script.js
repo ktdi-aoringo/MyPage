@@ -142,3 +142,133 @@ const createMobileMenu = () => {
 
 // Initialize mobile menu
 document.addEventListener('DOMContentLoaded', createMobileMenu);
+
+// CV Publication Sorting and Filtering
+document.addEventListener('DOMContentLoaded', () => {
+    // Only run on CV page
+    if (!document.getElementById('sort-by')) return;
+    
+    const sortSelect = document.getElementById('sort-by');
+    const filterSelect = document.getElementById('filter-category');
+    const resetButton = document.getElementById('reset-sort');
+    
+    // Store original order
+    const originalOrder = new Map();
+    
+    // Initialize original order
+    document.querySelectorAll('.cv-publication-list').forEach(list => {
+        const items = Array.from(list.children);
+        originalOrder.set(list, items.map(item => item.cloneNode(true)));
+    });
+    
+    // Extract year from publication text
+    function extractYear(text) {
+        const yearMatch = text.match(/(\d{4})/g);
+        return yearMatch ? Math.max(...yearMatch.map(Number)) : 0;
+    }
+    
+    // Extract author from publication text
+    function extractAuthor(text) {
+        const authorMatch = text.match(/^([^;]+)/);
+        return authorMatch ? authorMatch[1].trim() : '';
+    }
+    
+    // Extract title from publication text
+    function extractTitle(text) {
+        const titleMatch = text.match(/"([^"]+)"/);
+        return titleMatch ? titleMatch[1].trim() : '';
+    }
+    
+    // Sort publications
+    function sortPublications(sortBy) {
+        document.querySelectorAll('.cv-publication-list').forEach(list => {
+            const items = Array.from(list.children);
+            
+            let sortedItems;
+            switch(sortBy) {
+                case 'year-desc':
+                    sortedItems = items.sort((a, b) => {
+                        const yearA = extractYear(a.textContent);
+                        const yearB = extractYear(b.textContent);
+                        return yearB - yearA;
+                    });
+                    break;
+                    
+                case 'year-asc':
+                    sortedItems = items.sort((a, b) => {
+                        const yearA = extractYear(a.textContent);
+                        const yearB = extractYear(b.textContent);
+                        return yearA - yearB;
+                    });
+                    break;
+                    
+                case 'author':
+                    sortedItems = items.sort((a, b) => {
+                        const authorA = extractAuthor(a.textContent);
+                        const authorB = extractAuthor(b.textContent);
+                        return authorA.localeCompare(authorB);
+                    });
+                    break;
+                    
+                case 'title':
+                    sortedItems = items.sort((a, b) => {
+                        const titleA = extractTitle(a.textContent);
+                        const titleB = extractTitle(b.textContent);
+                        return titleA.localeCompare(titleB);
+                    });
+                    break;
+                    
+                default:
+                    sortedItems = originalOrder.get(list) || items;
+                    break;
+            }
+            
+            // Clear and re-append sorted items
+            list.innerHTML = '';
+            sortedItems.forEach(item => {
+                list.appendChild(item.cloneNode ? item.cloneNode(true) : item);
+            });
+            
+            // Add sorted class for styling
+            if (sortBy !== 'default') {
+                list.classList.add('sorted');
+            } else {
+                list.classList.remove('sorted');
+            }
+        });
+    }
+    
+    // Filter publications by category
+    function filterPublications(category) {
+        document.querySelectorAll('.cv-subsection').forEach(section => {
+            const list = section.querySelector('.cv-publication-list');
+            if (!list) return;
+            
+            if (category === 'all') {
+                section.classList.remove('hidden');
+            } else {
+                const hasCategory = list.classList.contains(category);
+                section.classList.toggle('hidden', !hasCategory);
+            }
+        });
+    }
+    
+    // Reset to original state
+    function resetSortFilter() {
+        sortSelect.value = 'default';
+        filterSelect.value = 'all';
+        sortPublications('default');
+        filterPublications('all');
+    }
+    
+    // Event listeners
+    sortSelect.addEventListener('change', (e) => {
+        sortPublications(e.target.value);
+    });
+    
+    filterSelect.addEventListener('change', (e) => {
+        filterPublications(e.target.value);
+    });
+    
+    resetButton.addEventListener('click', resetSortFilter);
+});

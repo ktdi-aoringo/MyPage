@@ -98,6 +98,31 @@
                 <section class="cv-section">
                     <h3>研究成果</h3>
                     
+                    <div class="cv-sort-controls">
+                        <label for="sort-by">ソート順:</label>
+                        <select id="sort-by">
+                            <option value="default">デフォルト</option>
+                            <option value="year-desc">年度順（新しい順）</option>
+                            <option value="year-asc">年度順（古い順）</option>
+                            <option value="author">著者順（アルファベット）</option>
+                            <option value="title">タイトル順（アルファベット）</option>
+                        </select>
+                        
+                        <label for="filter-category">カテゴリ:</label>
+                        <select id="filter-category">
+                            <option value="all">すべて</option>
+                            <option value="proceedings">学術論文</option>
+                            <option value="working-papers">ワーキングペーパー</option>
+                            <option value="international">国際会議</option>
+                            <option value="domestic">国内会議</option>
+                            <option value="awards">受賞</option>
+                            <option value="talks">講演</option>
+                            <option value="scheduled">発表予定</option>
+                        </select>
+                        
+                        <button id="reset-sort">リセット</button>
+                    </div>
+                    
                     <div class="cv-subsection">
                         <h4>学術論文（全て国際会議プロシーディングス・査読有）</h4>
                         <ul class="cv-publication-list proceedings">
