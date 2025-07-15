@@ -150,17 +150,39 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const sortSelect = document.getElementById('sort-by');
     const filterSelect = document.getElementById('filter-category');
-    const firstAuthorSelect = document.getElementById('filter-first-author');
+    const coauthorsSelect = document.getElementById('filter-coauthors');
+    const firstAuthorCheckbox = document.getElementById('filter-first-author');
     const resetButton = document.getElementById('reset-sort');
     
     // Store original order
     const originalOrder = new Map();
     
-    // Initialize original order
+    // Initialize original order and extract coauthors
+    const allCoauthors = new Map();
+    
     document.querySelectorAll('.cv-publication-list').forEach(list => {
         const items = Array.from(list.children);
         originalOrder.set(list, items.map(item => item.cloneNode(true)));
+        
+        // Extract coauthors from each publication
+        items.forEach(item => {
+            const authors = extractAllAuthors(item.innerHTML);
+            authors.forEach(author => {
+                if (author !== 'A. Kitadai') { // Exclude self
+                    allCoauthors.set(author, (allCoauthors.get(author) || 0) + 1);
+                }
+            });
+        });
     });
+    
+    // Filter coauthors who appear in 2+ publications
+    const frequentCoauthors = Array.from(allCoauthors.entries())
+        .filter(([author, count]) => count >= 2)
+        .map(([author, count]) => author)
+        .sort();
+    
+    // Populate coauthors select
+    populateCoauthorsSelect(frequentCoauthors);
     
     // Extract year from publication text
     function extractYear(text) {
@@ -179,12 +201,43 @@ document.addEventListener('DOMContentLoaded', () => {
         return authorMatch ? authorMatch[1].trim() : '';
     }
     
-    // Check if A.Kitadai is first author
-    function isFirstAuthor(text) {
+    // Extract all authors from publication HTML
+    function extractAllAuthors(html) {
         // Remove any leading numbering like "[P1] " or similar
-        const cleanText = text.replace(/^\[[^\]]+\]\s*/, '');
+        const cleanHtml = html.replace(/^\[[^\]]+\]\s*/, '');
+        // Extract the author section (everything before the first semicolon or quote)
+        const authorMatch = cleanHtml.match(/^([^;"]+)/);
+        if (!authorMatch) return [];
+        
+        const authorSection = authorMatch[1];
+        // Remove HTML tags and split by common separators
+        const plainText = authorSection.replace(/<[^>]*>/g, '');
+        const authors = plainText.split(/,|\sand\s/)
+            .map(author => author.trim())
+            .filter(author => author.length > 0 && !author.match(/^\d+$/));
+        
+        return authors;
+    }
+    
+    // Populate coauthors select dropdown
+    function populateCoauthorsSelect(authors) {
+        coauthorsSelect.innerHTML = '';
+        authors.forEach(author => {
+            const option = document.createElement('option');
+            option.value = author;
+            option.textContent = author;
+            coauthorsSelect.appendChild(option);
+        });
+    }
+    
+    // Check if A.Kitadai is first author
+    function isFirstAuthor(html) {
+        // Remove any leading numbering like "[P1] " or similar
+        const cleanHtml = html.replace(/^\[[^\]]+\]\s*/, '');
         // Check if text starts with A. Kitadai (with or without strong tags)
-        return /^(<strong>)?A\.\s*Kitadai(<\/strong>)?[,;]/.test(cleanText);
+        // Look for <strong>A. Kitadai</strong> or just A. Kitadai at the beginning
+        return /^(<strong>)?\s*A\.\s*Kitadai(<\/strong>)?[\s,;]/.test(cleanHtml) || 
+               /^<strong>A\.\s*Kitadai<\/strong>[\s,;]/.test(cleanHtml);
     }
     
     // Sort publications
@@ -198,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     sortedItems = items.sort((a, b) => {
                         const yearA = extractYear(a.textContent);
                         const yearB = extractYear(b.textContent);
-                        console.log(`Comparing: ${yearA} vs ${yearB} (${a.textContent.substring(0, 50)}...)`);
                         return yearB - yearA;
                     });
                     break;
@@ -207,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     sortedItems = items.sort((a, b) => {
                         const yearA = extractYear(a.textContent);
                         const yearB = extractYear(b.textContent);
-                        console.log(`Comparing: ${yearA} vs ${yearB} (${a.textContent.substring(0, 50)}...)`);
                         return yearA - yearB;
                     });
                     break;
@@ -261,6 +312,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // Filter publications by coauthors
+    function filterByCoauthors(selectedAuthors) {
+        if (selectedAuthors.length === 0) {
+            // Show all if no authors selected
+            document.querySelectorAll('.cv-publication-list li').forEach(item => {
+                item.classList.remove('hidden-by-coauthor');
+            });
+            return;
+        }
+        
+        document.querySelectorAll('.cv-publication-list').forEach(list => {
+            const items = Array.from(list.children);
+            
+            items.forEach(item => {
+                const authors = extractAllAuthors(item.innerHTML);
+                const hasSelectedAuthor = selectedAuthors.some(selectedAuthor => 
+                    authors.some(author => author.includes(selectedAuthor))
+                );
+                
+                if (hasSelectedAuthor) {
+                    item.classList.remove('hidden-by-coauthor');
+                } else {
+                    item.classList.add('hidden-by-coauthor');
+                }
+            });
+        });
+    }
+    
     // Filter publications by first author
     function filterByFirstAuthor(showFirstAuthorOnly) {
         document.querySelectorAll('.cv-publication-list').forEach(list => {
@@ -268,10 +347,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             items.forEach(item => {
                 if (showFirstAuthorOnly) {
-                    const isFirst = isFirstAuthor(item.textContent);
-                    item.style.display = isFirst ? 'block' : 'none';
+                    const isFirst = isFirstAuthor(item.innerHTML);
+                    if (isFirst) {
+                        item.classList.remove('hidden-by-first-author');
+                    } else {
+                        item.classList.add('hidden-by-first-author');
+                    }
                 } else {
-                    item.style.display = 'block';
+                    item.classList.remove('hidden-by-first-author');
                 }
             });
         });
@@ -280,20 +363,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply all filters
     function applyAllFilters() {
         const categoryFilter = filterSelect.value;
-        const firstAuthorFilter = firstAuthorSelect.value;
+        const selectedCoauthors = Array.from(coauthorsSelect.selectedOptions).map(option => option.value);
+        const firstAuthorFilter = firstAuthorCheckbox.checked;
         
         // Apply category filter
         filterPublications(categoryFilter);
         
+        // Apply coauthor filter
+        filterByCoauthors(selectedCoauthors);
+        
         // Apply first author filter
-        filterByFirstAuthor(firstAuthorFilter === 'first-author');
+        filterByFirstAuthor(firstAuthorFilter);
+        
+        // Update display based on all filters
+        updateItemVisibility();
+    }
+    
+    // Update item visibility based on all applied filters
+    function updateItemVisibility() {
+        document.querySelectorAll('.cv-publication-list li').forEach(item => {
+            const hiddenByCoauthor = item.classList.contains('hidden-by-coauthor');
+            const hiddenByFirstAuthor = item.classList.contains('hidden-by-first-author');
+            
+            if (hiddenByCoauthor || hiddenByFirstAuthor) {
+                item.style.display = 'none';
+            } else {
+                item.style.display = 'block';
+            }
+        });
     }
     
     // Reset to original state
     function resetSortFilter() {
         sortSelect.value = 'default';
         filterSelect.value = 'all';
-        firstAuthorSelect.value = 'all';
+        
+        // Clear coauthors selection
+        Array.from(coauthorsSelect.options).forEach(option => {
+            option.selected = false;
+        });
+        
+        // Uncheck first author checkbox
+        firstAuthorCheckbox.checked = false;
+        
         sortPublications('default');
         applyAllFilters();
     }
@@ -301,14 +413,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners
     sortSelect.addEventListener('change', (e) => {
         sortPublications(e.target.value);
-        applyAllFilters();
+        // Apply filters after sorting
+        setTimeout(() => applyAllFilters(), 10);
     });
     
     filterSelect.addEventListener('change', (e) => {
         applyAllFilters();
     });
     
-    firstAuthorSelect.addEventListener('change', (e) => {
+    coauthorsSelect.addEventListener('change', (e) => {
+        applyAllFilters();
+    });
+    
+    firstAuthorCheckbox.addEventListener('change', (e) => {
         applyAllFilters();
     });
     

@@ -507,6 +507,21 @@ body {
     font-size: 0.9rem;
 }
 
+.cv-sort-controls select[multiple] {
+    min-width: 200px;
+    max-height: 120px;
+}
+
+.cv-sort-controls label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cv-sort-controls input[type="checkbox"] {
+    margin: 0;
+}
+
 .cv-sort-controls button {
     padding: 0.5rem 1rem;
     background: #2563eb;
@@ -526,6 +541,12 @@ body {
 /* Hide sections when filtered */
 .cv-subsection.hidden {
     display: none;
+}
+
+/* Hide individual items when filtered */
+.cv-publication-list li.hidden-by-coauthor,
+.cv-publication-list li.hidden-by-first-author {
+    display: none !important;
 }
 
 /* Highlight sorted items */

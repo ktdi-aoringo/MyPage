@@ -119,11 +119,14 @@
                             <option value="scheduled">発表予定</option>
                         </select>
                         
-                        <label for="filter-first-author">著者フィルタ:</label>
-                        <select id="filter-first-author">
-                            <option value="all">すべて</option>
-                            <option value="first-author">A.Kitadai ファースト著者のみ</option>
+                        <label for="filter-coauthors">共著者フィルタ:</label>
+                        <select id="filter-coauthors" multiple size="5">
+                            <!-- 動的に生成される -->
                         </select>
+                        
+                        <label>
+                            <input type="checkbox" id="filter-first-author"> 第一著者のみ
+                        </label>
                         
                         <button id="reset-sort">リセット</button>
                     </div>
