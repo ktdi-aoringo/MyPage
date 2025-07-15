@@ -65,7 +65,7 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: 75vh;
     display: flex;
     align-items: center;
     padding: 0 20px;
@@ -100,8 +100,16 @@ body {
 
 .hero-description {
     font-size: 1.25rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-focus {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-buttons {
@@ -163,6 +171,8 @@ body {
 /* Sections */
 .section {
     padding: 5rem 0;
+    position: relative;
+    z-index: 10;
 }
 
 .bg-light {
@@ -184,12 +194,19 @@ body {
     grid-template-columns: 2fr 1fr;
     gap: 3rem;
     align-items: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-top: -2rem;
+    position: relative;
+    z-index: 20;
 }
 
 .profile-text {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #4b5563;
+    color: #374151;
 }
 
 .profile-text p {
@@ -372,6 +389,8 @@ body {
     .profile-content {
         grid-template-columns: 1fr;
         text-align: center;
+        margin-top: -1rem;
+        padding: 1.5rem;
     }
     
     .cv-item {
