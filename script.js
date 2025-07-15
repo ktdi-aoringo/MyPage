@@ -98,6 +98,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only run on CV page
     if (!document.getElementById('sort-by')) return;
     
+    // Name mapping for English and Japanese names
+    const nameMapping = {
+        'M. Fujita': '藤田正典',
+        'N. Nishino': '西野成昭',
+        'Y. Tsurusaki': '鶴崎祐大',
+        'Y. Fukasawa': '深澤祐援',
+        'S. Lee': '李相直',
+        'Z. Zhou': '周澤宇',
+        'M. Kobayashi': '小林美充希',
+        'U. Sato': '佐藤詩',
+        'K. Akashi': '明石圭佑',
+        'S. Sugihara': '杉原秀一',
+        'Z. Cheng': '成也',
+        'Y. Dai': '戴雨',
+        'Y. Takenoya': '竹ノ谷悠',
+        'K. Ogawa': '小川健太',
+        'T. Nakashima': '中島拓',
+        'R. Ishikawa': '石川竜一郎',
+        'J. Teng': '滕健勇',
+        'K. Nishiyama': '西山浩平',
+        'H. Sawazaki': '澤崎遙夏',
+        'X. Shang': '尚暁',
+        'T. Oyama': '大山拓',
+        'R. Wada': '和田亮',
+        'R. Miratsu': '美良津亮',
+        'T. Nakamura': '中村太一',
+        'H. Watanabe': '渡邊光',
+        'Y. Nagaai': '永合由美子',
+        'T. Natsume': '夏目哲',
+        'F. Miyahara': '宮原史明',
+        'T. Itoh': '伊藤拓海',
+        'H. Takahashi': '高橋裕紀',
+        'K. Sumikura': '隅藏康一',
+        'N. Mizutani': '水谷尚紀'
+    };
+    
+    // Create reverse mapping (Japanese to English)
+    const reverseNameMapping = {};
+    Object.keys(nameMapping).forEach(english => {
+        reverseNameMapping[nameMapping[english]] = english;
+    });
+    
+    // Function to normalize names (convert to preferred display form)
+    function normalizeAuthorName(name) {
+        const trimmed = name.trim();
+        
+        // If it's an English name that has a Japanese equivalent, use Japanese
+        if (nameMapping[trimmed]) {
+            return nameMapping[trimmed];
+        }
+        
+        // If it's a Japanese name that has an English equivalent, keep Japanese
+        if (reverseNameMapping[trimmed]) {
+            return trimmed;
+        }
+        
+        // Return original name if no mapping found
+        return trimmed;
+    }
+    
+    // Function to check if two names refer to the same person
+    function isSamePerson(name1, name2) {
+        const norm1 = normalizeAuthorName(name1);
+        const norm2 = normalizeAuthorName(name2);
+        return norm1 === norm2;
+    }
+    
     const sortSelect = document.getElementById('sort-by');
     const filterSelect = document.getElementById('filter-category');
     const coauthorsSelect = document.getElementById('filter-coauthors');
@@ -118,8 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const authors = extractAllAuthors(item.innerHTML);
             authors.forEach(author => {
-                if (author !== 'A. Kitadai') { // Exclude self
-                    allCoauthors.set(author, (allCoauthors.get(author) || 0) + 1);
+                if (author !== 'A. Kitadai' && author !== '北代絢大') { // Exclude self
+                    const normalizedName = normalizeAuthorName(author);
+                    if (normalizedName !== 'A. Kitadai' && normalizedName !== '北代絢大') {
+                        allCoauthors.set(normalizedName, (allCoauthors.get(normalizedName) || 0) + 1);
+                    }
                 }
             });
         });
@@ -162,6 +232,10 @@ document.addEventListener('DOMContentLoaded', () => {
             /^\d{4}年\d{1,2}月$/,     // Year-month format
             /^\d{4}$/,               // Just year numbers
             /^\d+月$/,               // Just month
+            /^\d+年$/,               // Just year with 年
+            /^\d+月\d+日$/,          // Date format
+            /^\d+日$/,               // Just day
+            /\d{4}年\d{1,2}月/,     // Contains year-month anywhere
             /^(大阪|東京|京都|神奈川|愛知|福岡|北海道|沖縄|島根|高知|兵庫|千葉|埼玉|茨城|栃木|群馬|山梨|長野|新潟|富山|石川|福井|静岡|岐阜|三重|滋賀|奈良|和歌山|鳥取|岡山|広島|山口|徳島|香川|愛媛|佐賀|長崎|熊本|大分|宮崎|鹿児島|青森|岩手|宮城|秋田|山形|福島)$/,
             /^(pp?\.|pages?|vol\.|volume|no\.|number)\s*\d+/i,  // Page numbers, volumes
             /^IEEE|ACM|IFIP|CIRP|Conference|Workshop|Symposium/i,  // Conference names
@@ -176,7 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
             /^\d+\s*-\s*\d+,?\s+(June|July|March|April|May|August|September|October|November|December)\s*,?\s*\d{4}/i,  // Date ranges
             /^\d+\s*,\s*\d+\s*-\s*\d+$/,  // Volume, page range
             /^\w+\s+(Italy|Portugal|Spain|United Kingdom|Mexico|Greece|Japan|USA|UK)$/i,  // City, Country
-            /^\w+\s*,\s*\w+\s*,\s*\d+\s*-\s*\d+,?\s*\d{4}/  // Complex publication info
+            /^\w+\s*,\s*\w+\s*,\s*\d+\s*-\s*\d+,?\s*\d{4}/,  // Complex publication info
+            /^\[発表予定\]$/,           // [発表予定]
+            /^発表予定$/,              // 発表予定
+            /^\d+月\d+日-\d+日$/,      // Date ranges in Japanese
+            /^\d+-\d+\s*月$/,           // Month ranges
+            /^\d+月\d+日$/,            // Specific dates
+            /^\d+月\d+日-\d+日$/       // Date ranges
         ];
         
         // Check if name matches any exclude pattern
@@ -192,6 +272,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Names are typically between 2-50 characters
         if (cleanName.length < 2 || cleanName.length > 50) {
+            return false;
+        }
+        
+        // Additional specific exclusions for common non-name patterns
+        const specificExclusions = [
+            '大阪', '東京', '京都', '神奈川', '愛知', '福岡', '北海道', '沖縄', '島根', '高知',
+            '兵庫', '千葉', '埼玉', '茨城', '栃木', '群馬', '山梨', '長野', '新潟', '富山',
+            '石川', '福井', '静岡', '岐阜', '三重', '滋賀', '奈良', '和歌山', '鳥取', '岡山',
+            '広島', '山口', '徳島', '香川', '愛媛', '佐賀', '長崎', '熊本', '大分', '宮崎', '鹿児島',
+            '青森', '岩手', '宮城', '秋田', '山形', '福島'
+        ];
+        
+        if (specificExclusions.includes(cleanName)) {
             return false;
         }
         
@@ -217,7 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Split by comma and "and" (with optional &), then clean up
         const authors = plainText.split(/,|\s+and\s+|\s+&\s+/)
             .map(author => author.trim())
-            .filter(author => author.length > 0 && !author.match(/^\d+$/) && isPersonName(author));
+            .filter(author => {
+                // Basic filters
+                if (author.length === 0 || author.match(/^\d+$/)) {
+                    return false;
+                }
+                // Apply person name filter
+                return isPersonName(author);
+            });
         
         return authors;
     }
@@ -346,8 +446,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Check coauthor filter
                 if (selectedCoauthors.length > 0) {
                     const authors = extractAllAuthors(item.innerHTML);
+                    const normalizedAuthors = authors.map(author => normalizeAuthorName(author));
                     const hasSelectedAuthor = selectedCoauthors.some(selectedAuthor => 
-                        authors.some(author => author.trim() === selectedAuthor.trim())
+                        normalizedAuthors.some(author => author === selectedAuthor)
                     );
                     if (!hasSelectedAuthor) {
                         shouldShow = false;
