@@ -501,23 +501,41 @@ body {
     color: #2563eb;
 }
 
-/* Sort controls */
-.cv-sort-controls {
+/* Filter container */
+.cv-filter-container {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     margin-bottom: 2rem;
+}
+
+/* Sort controls */
+.cv-sort-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
     background: #f8fafc;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
 }
 
+/* Filter rows */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .cv-sort-controls label {
     font-weight: 500;
     color: #374151;
-    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
 .cv-sort-controls select {
@@ -529,22 +547,13 @@ body {
     font-size: 0.9rem;
 }
 
-.cv-sort-controls select[multiple] {
-    min-width: 200px;
-    max-height: 120px;
-}
 
-.cv-sort-controls label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
 
 .cv-sort-controls input[type="checkbox"] {
     margin: 0;
 }
 
-.cv-sort-controls button {
+#reset-sort {
     padding: 0.5rem 1rem;
     background: #2563eb;
     color: white;
@@ -554,9 +563,11 @@ body {
     font-size: 0.9rem;
     font-weight: 500;
     transition: background-color 0.2s;
+    height: fit-content;
+    align-self: flex-start;
 }
 
-.cv-sort-controls button:hover {
+#reset-sort:hover {
     background: #1d4ed8;
 }
 
@@ -577,14 +588,23 @@ body {
 }
 
 @media (max-width: 768px) {
-    .cv-sort-controls {
+    .cv-filter-container {
         flex-direction: column;
         align-items: stretch;
     }
     
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
     .cv-sort-controls label {
-        margin-right: 0;
         margin-bottom: 0.25rem;
+    }
+    
+    #reset-sort {
+        align-self: stretch;
     }
 }
 

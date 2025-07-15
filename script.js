@@ -334,7 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Populate coauthors select dropdown
     function populateCoauthorsSelect(authors) {
-        coauthorsSelect.innerHTML = '';
+        // Keep the "すべて" option and clear the rest
+        coauthorsSelect.innerHTML = '<option value="">すべて</option>';
         authors.forEach(author => {
             const option = document.createElement('option');
             option.value = author;
@@ -440,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply all filters
     function applyAllFilters() {
         const categoryFilter = filterSelect.value;
-        const selectedCoauthors = Array.from(coauthorsSelect.selectedOptions).map(option => option.value);
+        const selectedCoauthors = coauthorsSelect.value;
         const firstAuthorFilter = firstAuthorCheckbox.checked;
         
         // Apply category filter (section level)
@@ -454,12 +455,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 let shouldShow = true;
                 
                 // Check coauthor filter
-                if (selectedCoauthors.length > 0) {
+                if (selectedCoauthors && selectedCoauthors.length > 0) {
                     const authors = extractAllAuthors(item.innerHTML);
                     const normalizedAuthors = authors.map(author => normalizeAuthorName(author));
-                    const hasSelectedAuthor = selectedCoauthors.some(selectedAuthor => 
-                        normalizedAuthors.some(author => author === selectedAuthor)
-                    );
+                    const hasSelectedAuthor = normalizedAuthors.includes(selectedCoauthors);
                     if (!hasSelectedAuthor) {
                         shouldShow = false;
                     }
@@ -494,10 +493,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sortSelect.value = 'default';
         filterSelect.value = 'all';
         
-        // Clear coauthors selection
-        Array.from(coauthorsSelect.options).forEach(option => {
-            option.selected = false;
-        });
+        // Reset coauthors selection to "すべて"
+        coauthorsSelect.value = '';
         
         // Uncheck first author checkbox
         firstAuthorCheckbox.checked = false;
