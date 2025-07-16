@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html">ホーム</a>
+                <a href="index.html">Home</a>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html#research">Research</a></li>
@@ -104,43 +104,41 @@
                 <section class="cv-section">
                     <h3>研究成果</h3>
 
-                    <div class="cv-filter-container">
-                        <div class="cv-sort-controls">
-                            <div class="filter-row">
-                                <label for="sort-by">ソート順:</label>
-                                <select id="sort-by">
-                                    <option value="default">デフォルト</option>
-                                    <option value="year-desc">年度順（新しい順）</option>
-                                    <option value="year-asc">年度順（古い順）</option>
-                                    <option value="author">著者順（アルファベット）</option>
-                                </select>
+                    <div class="cv-sort-controls">
+                        <div class="filter-row">
+                            <label for="sort-by">ソート順:</label>
+                            <select id="sort-by">
+                                <option value="default">デフォルト</option>
+                                <option value="year-desc">年度順（新しい順）</option>
+                                <option value="year-asc">年度順（古い順）</option>
+                            </select>
 
-                                <label for="filter-category">カテゴリ:</label>
-                                <select id="filter-category">
-                                    <option value="all">すべて</option>
-                                    <option value="proceedings">学術論文</option>
-                                    <option value="working-papers">ワーキングペーパー</option>
-                                    <option value="international">国際会議</option>
-                                    <option value="domestic">国内会議</option>
-                                    <option value="awards">受賞</option>
-                                    <option value="talks">講演</option>
-                                    <option value="scheduled">発表予定</option>
-                                </select>
-                            </div>
-
-                            <div class="filter-row">
-                                <label>
-                                    <input type="checkbox" id="filter-first-author"> 第一著者のみ
-                                </label>
-
-                                <label for="filter-coauthors">共著者:</label>
-                                <select id="filter-coauthors">
-                                    <option value="">すべて</option>
-                                    <!-- 動的に生成される -->
-                                </select>
-                            </div>
+                            <label for="filter-category">カテゴリ:</label>
+                            <select id="filter-category">
+                                <option value="all">すべて</option>
+                                <option value="proceedings">学術論文</option>
+                                <option value="working-papers">ワーキングペーパー</option>
+                                <option value="international">国際会議</option>
+                                <option value="domestic">国内会議</option>
+                                <option value="awards">受賞</option>
+                                <option value="talks">講演</option>
+                                <option value="scheduled">発表予定</option>
+                            </select>
                         </div>
-                        <button id="reset-sort">リセット</button>
+
+                        <div class="filter-row">
+                            <label>
+                                <input type="checkbox" id="filter-first-author"> 第一著者のみ
+                            </label>
+
+                            <label for="filter-coauthors">共著者:</label>
+                            <select id="filter-coauthors">
+                                <option value="">すべて</option>
+                                <!-- 動的に生成される -->
+                            </select>
+
+                            <button id="reset-sort">リセット</button>
+                        </div>
                     </div>
 
                     <div class="cv-subsection">
@@ -149,34 +147,72 @@
                             <li>M. Fujita, <strong>A. Kitadai</strong>, K. Sumikura and N. Nishino; "Toward the
                                 Utilization of Artificial Intelligence in Life Sciences: A Voluntary Medical Data
                                 Provisioning Model," 2022 IEEE International Conference on Big Data, pp. 3250-3257,
-                                2022.</li>
+                                2022.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, S.D.R. Lugo, S. Lee, M. Fujita and N. Nishino; "Weighted
                                 Reward Allocation Mechanism for Data Collection Quality," International Conference on
-                                Group Decision and Negotiation, pp. 161-174, 2023.</li>
+                                Group Decision and Negotiation, pp. 161-174, 2023.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, Y. Tsurusaki, Y. Fukasawa and N. Nishino; "Toward a Novel
                                 Methodology in Economic Experiments: Simulation of the Ultimatum Game with Large
                                 Language Models," 2023 IEEE International Conference on Big Data, pp. 3168-3175, 2023.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
                             </li>
                             <li>Z. Zhou, M. Kobayashi, U. Sato, K. Akashi, <strong>A. Kitadai</strong>, S. Sugihara, Y.
                                 Fukasawa, M. Fujita and N. Nishino; "Evaluating the alleviation of traffic congestion
                                 through Bus Rapid Transit using Multi-Agent Simulation," 2023 IEEE International
-                                Conference on Big Data, pp. 3237-3244, 2023.</li>
+                                Conference on Big Data, pp. 3237-3244, 2023.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>M. Fujita, Z. Cheng, S. D. R. Lugo, <strong>A. Kitadai</strong>, Y. Dai, Y. Fukasawa and
                                 N. Nishino; "Analysis of Medical Data and Machine-Learning Algorithms from the
                                 Perspective of Public-Goods Models of Data-Provision Decision Making," Procedia CIRP,
-                                126, 3-8, 2024.</li>
+                                126, 3-8, 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>M. Fujita, Y. Dai, <strong>A. Kitadai</strong>, S.D.R. Lugo, Z. Cheng and N. Nishino;
                                 "Survey on Stakeholder Cooperative Behavior for Designing Voluntary Medical Data
-                                Provision Motivation Mechanisms," Procedia CIRP, 126, 14-19, 2024.</li>
+                                Provision Motivation Mechanisms," Procedia CIRP, 126, 14-19, 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>M. Kobayashi, <strong>A. Kitadai</strong>, U. Sato, M. Fujita and N. Nishino; "Real
                                 Traffic Analysis Around Large-Scale Shopping Mall Using Game Theory," IFIP International
-                                Conference on Advances in Production Management Systems, pp. 408-423, 2024.</li>
+                                Conference on Advances in Production Management Systems, pp. 408-423, 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, K. Ogawa and N. Nishino; "Examining the Feasibility of
                                 Large Language Models as Survey Respondents," 2024 IEEE International Conference on Big
-                                Data, pp. 3858-3864, 2024.</li>
+                                Data, pp. 3858-3864, 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>Y. Takenoya, <strong>A. Kitadai</strong>, & N. Nishino, "Accounting for Traffic
                                 Congestion: Heterogeneous Target Arrival Times, Uncertainty, and Monetary Incentives,"
-                                2024 IEEE International Conference on Big Data, pp. 3880-3888, 2024.</li>
+                                2024 IEEE International Conference on Big Data, pp. 3880-3888, 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -185,9 +221,26 @@
                         <ul class="cv-publication-list working-papers">
                             <li><strong>A. Kitadai</strong>, S.D.R. Lugo, Y. Tsurusaki, Y. Fukasawa and N. Nishino; "Can
                                 AI with High Reasoning Ability Replicate Human-like Decision Making in Economic
-                                Experiments?" Group Decision and Negotiation, R&R</li>
+                                Experiments?" Group Decision and Negotiation, R&R
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, Y. Fukasawa and N. Nishino; "Bias-Adjusted LLM Agents for
-                                Human-Like Decision-Making via Behavioral Economics," Under Review</li>
+                                Human-Like Decision-Making via Behavioral Economics," Under Review
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
+                            <li><strong>A. Kitadai</strong>, T. Ito, Y. Nagoh, H. Takahashi, M. Fujita, S. Lee, F.
+                                Miyahara, T. Natsume and N. Nishino; "Decision Support System for Technology Opportunity
+                                Discovery: An Application of the Schwartz Theory of Basic Values," Under Review
+                                <div class="publication-tags">
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -198,19 +251,38 @@
                                 AI with High Reasoning Ability Replicate Human-like Decision Making in Economic
                                 Experiments?" 24th International Conference on Group Decision and Negotiation & 10th
                                 International Conference on Decision Support System Technology, Porto, Portugal, 2-5
-                                June 2024.</li>
+                                June 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>H. Sawazaki, X. Shang, S. Lee, <strong>A. Kitadai</strong>, and N. Nishino; "Tenant
                                 allocation in shopping malls based on deferred acceptance algorithm," The 18th CIRP
                                 International Conference on Intelligent Computation in Manufacturing Engineering, Gulf
-                                of Naples, Italy, 10-12 July 2024.</li>
+                                of Naples, Italy, 10-12 July 2024.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, R. Ishikawa, S. Lee, J. Teng, K. Nishiyama and N. Nishino;
                                 "Consensus Formation in Physical, Virtual, and Interverse Spaces: Experimental
                                 Insights," The 25th International Congerence on Group Decision and Negotiation,
-                                Zaragoza, Spain, 15-18, June, 2025.</li>
+                                Zaragoza, Spain, 15-18, June, 2025.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li><strong>A. Kitadai</strong>, T. Nakashima, Y. Tsurusaki, R. Miratsu, N. Mizutani and N.
                                 Nishino; "Can rich information decrease anchorage waiting time? A game-theoretic
                                 analysis toward sustainable shipping," The 34th European Conference on Operational
-                                Research, Leeds, United Kingdom, 22-25, June, 2025.</li>
+                                Research, Leeds, United Kingdom, 22-25, June, 2025.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -218,50 +290,121 @@
                         <h4>国内会議発表（全て口頭・査読有）</h4>
                         <ul class="cv-publication-list domestic">
                             <li>藤田正典, <strong>北代絢大</strong>, 隅藏康一,
-                                西野成昭：「生命科学へのAI活用に向けた医療データの円滑な提供を促すメカニズムの設計」人工知能学会第21回SIG-BI研究会, 神奈川, 2022年9月.</li>
-                            <li><strong>北代絢大</strong>, 藤田正典, 西野成昭：「円滑なデータ収集メカニズムの設計」サービス学会第11回国内大会, 京都, 2023年3月.</li>
+                                西野成昭：「生命科学へのAI活用に向けた医療データの円滑な提供を促すメカニズムの設計」人工知能学会第21回SIG-BI研究会, 神奈川, 2022年9月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
+                            <li><strong>北代絢大</strong>, 藤田正典, 西野成昭：「円滑なデータ収集メカニズムの設計」サービス学会第11回国内大会, 京都, 2023年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>伊藤拓海, 西野成昭, 高橋裕紀, <strong>北代絢大</strong>, 藤田正典, 永合由美子, 夏目哲,
-                                宮原史明：「技術がどのように価値を生み出すか？：機能と価値のマッチングモデルの提案とケーススタディ」サービス学会第11回国内大会, 京都, 2023年3月.</li>
+                                宮原史明：「技術がどのように価値を生み出すか？：機能と価値のマッチングモデルの提案とケーススタディ」サービス学会第11回国内大会, 京都, 2023年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>北代絢大</strong>, 鶴崎祐大, 深澤祐援, 西野成昭：「最後通牒ゲームの大規模言語モデルを用いたシミュレーション ——
-                                経済実験における新手法確立に向けて ——」行動経済学会第17回大会, 高知, 2023年12月.（査読有ポスターも同時発表）</li>
+                                経済実験における新手法確立に向けて ——」行動経済学会第17回大会, 高知, 2023年12月.（査読有ポスターも同時発表）
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>小林美充希, <strong>北代絢大</strong>, 周澤宇, 藤田正典,
                                 西野成昭：「大規模集客施設周辺における渋滞緩和のための交通分析：実データに基づいたモデル化及びシミュレーション」サービス学会第12回国内大会, 東京, 2024年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
                             </li>
                             <li>Z. Cheng, <strong>A. Kitadai</strong>, S.D.R. Lugo, N. Nishino, M. Fujita and L. Zhang;
                                 "Medical Data Classification and Provision Willingness Analysis Based on Public Goods
-                                Perspective," サービス学会第12回国内大会, 東京, 2024年3月.</li>
+                                Perspective," サービス学会第12回国内大会, 東京, 2024年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>成也, 澤崎遙夏, 西野成昭, <strong>北代絢大</strong>,
-                                李相直：「複製を用いた一対多マッチングの一対一のマッチング問題への変換手法に関する研究」サービス学会第12回国内大会, 東京, 2024年3月.</li>
+                                李相直：「複製を用いた一対多マッチングの一対一のマッチング問題への変換手法に関する研究」サービス学会第12回国内大会, 東京, 2024年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>北代絢大</strong>, 西野成昭：「アンケート調査における大規模言語モデルの回答者代替可能性」日本経営工学会秋季大会, 島根, 2024年10月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
                             </li>
                             <li>竹ノ谷悠, <strong>北代絢大</strong>, 西野成昭：「到着時刻の異質性を組み込んだ交通状況評価の数値解析」日本経営工学会秋季大会, 島根, 2024年10月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
                             </li>
                             <li>周澤宇, <strong>北代絢大</strong>, 佐藤詩, 竹ノ谷悠, 西野成昭：「渋滞緩和のための効果的なBus Rapid
-                                Transit導⼊に関する評価検証：実データに基づくモデル化およびシミュレーション」日本経営工学会秋季大会, 島根, 2024年10月.</li>
+                                Transit導⼊に関する評価検証：実データに基づくモデル化およびシミュレーション」日本経営工学会秋季大会, 島根, 2024年10月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>北代絢大</strong>, 深澤祐援,
                                 西野成昭：「最後通牒ゲームの大規模言語モデルを用いたシミュレーション：バイアス補正による実験結果の再現性検証」行動経済学会第18回大会, 大阪,
-                                2024年12月.（査読有ポスターも同時発表）</li>
+                                2024年12月.（査読有ポスターも同時発表）
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>渡邊光, <strong>北代絢大</strong>, 永合由美子, 李相直, 夏目哲, 宮原史明, 藤田正典,
-                                西野成昭：「新製品開発における意思決定支援ツールの提案：LLMとマッチングモデルを活用して」サービス学会第13回国内大会, 大阪, 2025年3月.</li>
+                                西野成昭：「新製品開発における意思決定支援ツールの提案：LLMとマッチングモデルを活用して」サービス学会第13回国内大会, 大阪, 2025年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>周澤宇, <strong>北代絢大</strong>, 佐藤詩, 竹ノ谷悠, 藤田正典, 西野成昭：「交通渋滞緩和に向けたBus Rapid
-                                Transit導入に関する評価検証：実データに基づくモデル化およびシミュレーション」サービス学会第13回国内大会, 大阪, 2025年3月.</li>
+                                Transit導入に関する評価検証：実データに基づくモデル化およびシミュレーション」サービス学会第13回国内大会, 大阪, 2025年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li><strong>北代絢大</strong>, 石川竜一郎, 李相直, 滕健勇, 西山浩平, 西野成昭：「バーチャルエコノミーに向けたサービス設計の新視点:
-                                空間の差異がコミュニケーションにもたらす影響」サービス学会第13回国内大会, 大阪, 2025年3月.</li>
+                                空間の差異がコミュニケーションにもたらす影響」サービス学会第13回国内大会, 大阪, 2025年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
                             <li>竹ノ谷悠, <strong>北代絢大</strong>, 西野成昭：「出発時刻選択モデルにおける金銭的インセンティブの渋滞緩和効果分析」サービス学会第13回国内大会, 大阪,
-                                2025年3月.</li>
+                                2025年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                             <li>中村太一, <strong>北代絢大</strong>,
-                                西野成昭：「データ収集における協力行動の理論分析と経済実験：不完備情報下の非線形公共財ゲーム」サービス学会第13回国内大会, 大阪, 2025年3月.</li>
+                                西野成昭：「データ収集における協力行動の理論分析と経済実験：不完備情報下の非線形公共財ゲーム」サービス学会第13回国内大会, 大阪, 2025年3月.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
                     <div class="cv-subsection">
                         <h4>受賞</h4>
                         <ul class="cv-publication-list awards">
-                            <li>サービス学会第11回国内大会 大会優秀賞を受賞（2023）</li>
-                            <li>2023 GDN Springer Best Student Paper Award を受賞（2023）</li>
-                            <li>行動経済学会ポスター報告奨励賞（一般部門）を受賞（2024）</li>
-                            <li>サービス学会第12回国内大会 大会優秀賞・新井賞を受賞（2024）</li>
-                            <li>2024 GDN Springer Best Student Paper Award を受賞（2024）</li>
+                            <li>サービス学会第11回国内大会 大会優秀賞を受賞（2023）
+                            </li>
+                            <li>2023 GDN Springer Best Student Paper Award を受賞（2023）
+                            </li>
+                            <li>行動経済学会ポスター報告奨励賞（一般部門）を受賞（2024）
+                            </li>
+                            <li>サービス学会第12回国内大会 大会優秀賞・新井賞を受賞（2024）
+                            </li>
+                            <li>2024 GDN Springer Best Student Paper Award を受賞（2024）
+                            </li>
                         </ul>
                     </div>
 
@@ -270,13 +413,18 @@
                         <ul class="cv-publication-list talks">
                             <li>Ayato Kitadai, "Toward a Novel Methodology in Economic Experiments: Simulation of the
                                 Ultimatum Game with Large Language Models," Waseda Game Theory and Experimental
-                                Economics Workshop, 2024.</li>
-                            <li>北代絢大「公共財モデルとしてのデータ提供の意思決定分析」第2回メカニズムシンセシス研究セミナー, 2024</li>
+                                Economics Workshop, 2024.
+                            </li>
+                            <li>北代絢大「公共財モデルとしてのデータ提供の意思決定分析」第2回メカニズムシンセシス研究セミナー, 2024
+                            </li>
                             <li>Ayato Kitadai, "Exploring Various Methods for Generative Agents to Replicate Results in
                                 Economic Experiments of the Ulitumatum Game," Workshop on Articifcial Intelligence in
-                                Academic Research, 2024.</li>
-                            <li>北代絢大「AIを被験者とする経済実験」共同研究プロジェクト運営支援の研究会（京都産業大学　経済実験室）, 2024</li>
-                            <li>北代絢大「『経済セミナー』2024年8・９月号へのコメント」経済セミナー2024年12月・2025年1月号</li>
+                                Academic Research, 2024.
+                            </li>
+                            <li>北代絢大「AIを被験者とする経済実験」共同研究プロジェクト運営支援の研究会（京都産業大学　経済実験室）, 2024
+                            </li>
+                            <li>北代絢大「『経済セミナー』2024年8・９月号へのコメント」経済セミナー2024年12月・2025年1月号
+                            </li>
                         </ul>
                     </div>
 
@@ -286,9 +434,28 @@
                             <li>T. Nakashima, T. Oyama, R. Wada, <strong>A. Kitadai</strong> and N. Nishino; "A
                                 Transdisciplinary Approach to Cross-Sectoral Collaboration for Climate Change
                                 Adaptation: Bridging Synergies and Trade-Offs," 32nd International Conference on
-                                Transdisciplinary Engineering, Monterrey, Mexico, 7-11, July, 2025.</li>
-                            <li><strong>A.Kitadai</strong>, R.L. Sinndy Dayana and N. Nishino; [発表予定]</li>
-                            <li>S. Lee, <strong>A. Kitadai</strong>, Y. Cheng and N. Nishino; [発表予定]</li>
+                                Transdisciplinary Engineering, Monterrey, Mexico, 7-11, July, 2025.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
+                            <li><strong>A. Kitadai</strong>, S. D. Rico Lugo and N. Nishino; "Matching Problems in
+                                Remanufactured Products for Product Service Systems in the Circular Economy," APMS 2025
+                                – IFIP International Conference on Advances in Production Management Systems, Tokyo,
+                                Japan, September, 2025.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                    <span class="tag-first-author">第一著者</span>
+                                </div>
+                            </li>
+                            <li>S. Lee, <strong>A. Kitadai</strong>, Y. Cheng and N. Nishino; "Transformation of
+                                Many-to-One to One-to-One Matching Problems Through Replication," APMS 2025 – IFIP
+                                International Conference on Advances in Production Management Systems, Tokyo, Japan,
+                                September, 2025.
+                                <div class="publication-tags">
+                                    <span class="tag-reviewed">査読有</span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </section>
