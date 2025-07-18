@@ -23,7 +23,10 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="#home">ホーム</a>
+                <select class="language-selector" onchange="switchLanguage(this.value)">
+                    <option value="ja">日本語</option>
+                    <option value="en">English</option>
+                </select>
             </div>
             <ul class="nav-links">
                 <li><a href="#research">Research</a></li>
@@ -51,7 +54,7 @@
                 <div class="research-grid">
                     <div class="research-card">
                         <h3>実験経済学</h3>
-                        <p>経済実験を通じて、人々の意思決定行動を分析し、理論予測と実際の行動の比較を行っています。</p>
+                        <p>経済実験を通じて、人々の意思決定・行動を観察し、理論と現実との接続を図ります。</p>
                         <div class="research-tags">
                             <span class="tag">実験経済学</span>
                             <span class="tag">行動分析</span>
@@ -60,7 +63,7 @@
                     </div>
                     <div class="research-card">
                         <h3>ゲーム理論</h3>
-                        <p>戦略的相互作用における均衡分析や協調ゲームの理論的・実証的研究を行っています。</p>
+                        <p>人々のインセンティブ構造を数理的に記述し、均衡を分析します。これにより、人々の意思決定の相互作用が行き着く帰結を理論的に説明・予測します。</p>
                         <div class="research-tags">
                             <span class="tag">ゲーム理論</span>
                             <span class="tag">均衡分析</span>
@@ -76,11 +79,10 @@
                             <span class="tag">効率性</span>
                         </div>
                     </div>
-                </div>
-                <div class="research-grid">
                     <div class="research-card">
                         <h3>大規模言語モデル</h3>
-                        <p>LLMの社会科学研究への応用と、AIと人間の相互作用の研究を行っています。</p>
+                        <p>どうすればLLMに人の意思決定を模倣させられるのか、方法論の構築に取り組んでいます。これにより人を対象に設計した制度・システムのPoCのシミュレーションによる代替が実現すれば、理論研究を社会実装するまでのリードタイムが大幅に短縮されます。
+                        </p>
                         <div class="research-tags">
                             <span class="tag">LLM</span>
                             <span class="tag">AI</span>
@@ -123,6 +125,15 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        function switchLanguage(lang) {
+            if (lang === 'ja') {
+                window.location.href = 'index.html';
+            } else if (lang === 'en') {
+                window.location.href = 'index-en.html';
+            }
+        }
+    </script>
 </body>
 
 </html>

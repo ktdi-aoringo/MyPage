@@ -46,6 +46,28 @@ body {
     letter-spacing: -0.02em;
 }
 
+.language-selector {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: transparent;
+    border: 2px solid #2563eb;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.language-selector:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.language-selector:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
 .nav-links {
     display: flex;
     list-style: none;
@@ -69,7 +91,7 @@ body {
     display: flex;
     align-items: center;
     padding: 100px 0 0 0;
-    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
     color: white;
     position: relative;
     overflow: hidden;
@@ -83,7 +105,7 @@ body {
     transform: translate(-50%, -50%) rotate(-5deg);
     font-size: 4rem;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.08);
     white-space: nowrap;
     z-index: 1;
     pointer-events: none;
@@ -130,12 +152,12 @@ body {
     color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     display: inline-block;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 3;
 }
@@ -144,12 +166,12 @@ body {
     max-width: 600px;
     margin: 2rem auto 2.5rem auto;
     text-align: left;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     padding: 2rem;
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .hero-profile p {
@@ -566,6 +588,23 @@ body {
     font-size: 0.9rem;
 }
 
+/* Container for label-select pairs */
+.filter-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter-group label {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.filter-group select {
+    flex-shrink: 0;
+}
 
 
 .cv-sort-controls input[type="checkbox"] {
